@@ -29,4 +29,4 @@ jobs:
         app-name: 'imccoeproject'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_84f590c01a744cd18c715fee5f168c1d }}
-        package: '${{ github.workspace }}/target/*.jar'
+        package: '${{ github.workspace }}/target/*.war'
