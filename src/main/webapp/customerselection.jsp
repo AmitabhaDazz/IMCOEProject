@@ -8,5 +8,13 @@
 </head>
 <body>
 
+<h1>The file you have selected is</h1>
+
+      <ul>
+         <li><p><b>File Name:</b>
+            <%= request.getParameter("excelfile")%>
+
+         </p></li>
+      </ul>
 </body>
 </html>
