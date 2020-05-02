@@ -9,7 +9,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -93,28 +95,70 @@ public class FileUpload extends HttpServlet {
 
 	        // Get iterator to all the rows in current sheet
 	        Iterator<Row> rowIterator = mySheet.iterator();
-	        writer.println("<table >");
+	        Map uniqueClient = new HashMap();
+	        SummaryTableDataSet summaryTableOneRow=null;
+//	        writer.println("<table >");
 	        while (rowIterator.hasNext()) {
 	            Row row = rowIterator.next();
-	            writer.println("<tr>");
+//	            writer.println("<tr>");
 	            // For each row, iterate through each columns
 	            Iterator<Cell> cellIterator = row.cellIterator();
+	            double payg_1y=0.0;
+            	double ri_1y_PaygPrice=0.0;
+            	int cellcount = 1;
 	            while (cellIterator.hasNext()) {
-	            	writer.println("<td>");
-		            
-	                Cell cell = cellIterator.next();
-
+//	            	writer.println("<td>");
+	            	
+	            	Cell cell = cellIterator.next();
+	                if(cellcount==1) {
+	                	if (cell.getCellTypeEnum() == CellType.STRING) {
+	                		summaryTableOneRow.setCustomerName(cell.getStringCellValue());
+	                	}
+	                }
+	                if(cellcount==2) {
+	                	if (cell.getCellTypeEnum() == CellType.STRING) {
+	                		summaryTableOneRow.setSubscription(cell.getStringCellValue());
+	                	}
+	                }
+	                if(cellcount==3) {
+	                	if (cell.getCellTypeEnum() == CellType.STRING) {
+	                		summaryTableOneRow.setMeterName(cell.getStringCellValue());
+	                	}
+	                }
+	                if(cellcount==4) {
+	                	if (cell.getCellTypeEnum() == CellType.STRING) {
+	                		summaryTableOneRow.setMeterRegion(cell.getStringCellValue());
+	                	}
+	                }
+	                if(cellcount==17) {
+	                	if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+	                		payg_1y=cell.getNumericCellValue();
+	                		summaryTableOneRow.setPayG_1y(payg_1y);
+	                	}
+	                }
+	                if(cellcount==20) {
+	                	if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+	                		ri_1y_PaygPrice=cell.getNumericCellValue();
+	                		summaryTableOneRow.setRi_1Y_PAYGPrice(ri_1y_PaygPrice);
+	                	}
+	                }
+	                summaryTableOneRow.setRi_1Y_Savings_PAYG(payg_1y-ri_1y_PaygPrice);
+	                summaryTableOneRow.setBreakEvenMOnths_1YR(0.0);
+	                
 	                if (cell.getCellTypeEnum() == CellType.STRING) {
 	                	writer.print(cell.getStringCellValue());
 	                } else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
 	                	writer.print(cell.getNumericCellValue());
 	                }
-	                writer.println("</td>");
-		            
+//	                writer.println("</td>");
 	            }
-	            writer.println("</tr>"); 
+	            cellcount++;
+	            
+//	            writer.println("</tr>"); 
 	        }
-	        writer.println("</table>");
+	        System.out.println(summaryTableOneRow.getCustomerName());
+//	        writer.println("</table>");
+	        
 	        
 //	        LOGGER.log(Level.INFO, "File{0}being uploaded to {1}", 
 //	                new Object[]{fileName, path});
@@ -152,3 +196,4 @@ public class FileUpload extends HttpServlet {
 	}
 
 }
+
