@@ -95,12 +95,6 @@ public class FileUpload extends HttpServlet {
 	    }
 	}
 	
-	protected void processRequest(HttpServletRequest request,
-	        HttpServletResponse response)
-	        throws ServletException, IOException {
-	    
-	}
-
 	private String getFileName(final Part part) {
 	    final String partHeader = part.getHeader("content-disposition");
 //	    LOGGER.log(Level.INFO, "Part Header = {0}", partHeader);
