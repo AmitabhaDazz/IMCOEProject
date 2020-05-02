@@ -8,7 +8,7 @@
 <form action = "fileupload" method = "post"  enctype="multipart/form-data">
 	<label for="excelfile">Select a file:</label>
 	<input type="file" id="excelfile" name="excelfile">
-	<input type = "submit" value = "Submit" />
+	<input type = "submit" value = "Submit"  />
 </form>
 </body>
 </html>
