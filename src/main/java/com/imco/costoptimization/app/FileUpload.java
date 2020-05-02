@@ -47,16 +47,8 @@ public class FileUpload extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-		String yourName = request.getParameter("excelfile");
-		PrintWriter writer = response.getWriter();
-		writer.println("<h1>Hello " + yourName + "</h1>");
-		writer.close();
-	}
-	
-	protected void processRequest(HttpServletRequest request,
-	        HttpServletResponse response)
-	        throws ServletException, IOException {
-	    response.setContentType("text/html;charset=UTF-8");
+//		String yourName = request.getParameter("excelfile");
+		response.setContentType("text/html;charset=UTF-8");
 
 	    // Create path components to save the file
 	    final String path = "/temp";
@@ -101,6 +93,12 @@ public class FileUpload extends HttpServlet {
 	            writer.close();
 	        }
 	    }
+	}
+	
+	protected void processRequest(HttpServletRequest request,
+	        HttpServletResponse response)
+	        throws ServletException, IOException {
+	    
 	}
 
 	private String getFileName(final Part part) {
