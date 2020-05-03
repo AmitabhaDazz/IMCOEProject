@@ -14,29 +14,57 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
-<body>
-
 <% 
 Map<String, List<SummaryTableDataSet>> collectionObject=(HashMap<String, List<SummaryTableDataSet>>)request.getSession().getAttribute("collectionObject");
 String selectedClientName = request.getParameter("customerName");
 List<SummaryTableDataSet> objectofOneClient = (List<SummaryTableDataSet>)collectionObject.get(selectedClientName);
-
-out.println(selectedClientName);
-
-
 %>
-<table class="w3-table-all">
-    <tr>
-      <th>Subscription</th>
-      <th>Meter Name</th>
-      <th>Meter Region</th>
-      <th>Count of Meter Name</th>
-      <th>PAYG 1 Year</th>
-      <th>RI PAYG 1 Year</th>
-      <th>Savings 1 Year</th>
-      <th>BreakEvenMonth</th>
-    </tr>
-	
+
+<body>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table style="height: 281px;" border="1" width="597">
+<tbody>
+<tr>
+<td style="width: 587px; text-align: center;">
+<h2>Ingram Micro Azure Reserved Instances Recommendation Report</h2>
+Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h1 style="text-align: center;"><%=selectedClientName %></h1>
+<p style="text-align: center;">Recommendation Generated on Date</p>
+<table style="height: 71px;" width="591">
+<tbody>
+<tr>
+<td style="width: 581px;">
+<p>Ingram Micro Azure Reserved Instances Recommendation Report</p>
+<h2>1 Yrs Upfront Purchase recommendations(Compute Only)</h2>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+
+<table border="1" colspan='1' style="height: 213px;" width="100%" class="w3-table-all">
+<center>
+<tbody>
+<tr>
+<td style="width: 581px;">
+<table style="height: 81px;" width="572">
+<tbody>
+<tr>
+<td style="width: 65px; text-align: center;">Subscription</td>
+<td style="width: 65px; text-align: center;">Meter Name</td>
+<td style="width: 65px; text-align: center;">Meter Region</td>
+<td style="width: 65px; text-align: center;">Count of Meter name</td>
+<td style="width: 65px; text-align: center;">PAYG_1Y</td>
+<td style="width: 65px; text-align: center;">RI_1Y_PAYGPrice</td>
+<td style="width: 65px; text-align: center;">1Y Savings</td>
+<td style="width: 65px; text-align: center;">BreakEven</td>
+</tr>
 <%
 	for (SummaryTableDataSet eachObject : objectofOneClient) {
 		out.println("<tr>");
@@ -51,8 +79,46 @@ out.println(selectedClientName);
     	out.println("</tr>");
  	}
 %>  
-	
-	  
+</tbody>
+</center>
+</table>
+
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>&nbsp;</strong></p>
+<table style="height: 175px;" width="586">
+<tbody>
+<tr>
+<td style="width: 576px;">
+<table style="height: 56px;" width="565">
+<tbody>
+<tr>
+<td style="width: 64px; text-align: center;">Resource Group</td>
+<td style="width: 64px; text-align: center;">Instance ID</td>
+<td style="width: 64px; text-align: center;">Unit Price PAYG</td>
+<td style="width: 64px; text-align: center;">PAYG 1 Y</td>
+<td style="width: 64px; text-align: center;">RI 1Y</td>
+<td style="width: 64px; text-align: center;">Savings</td>
+<td style="width: 64px; text-align: center;">Meter Name</td>
+<td style="width: 65px;">&nbsp;</td>
+</tr>
+<tr>
+<td style="width: 64px;">&nbsp;</td>
+<td style="width: 64px;">&nbsp;</td>
+<td style="width: 64px;">&nbsp;</td>
+<td style="width: 64px;">&nbsp;</td>
+<td style="width: 64px;">&nbsp;</td>
+<td style="width: 64px;">&nbsp;</td>
+<td style="width: 64px;">&nbsp;</td>
+<td style="width: 65px;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
