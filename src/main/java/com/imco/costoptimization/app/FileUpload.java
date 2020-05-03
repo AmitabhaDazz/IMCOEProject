@@ -21,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -132,6 +133,16 @@ public class FileUpload extends HttpServlet {
 	                		summaryTableOneRow.setMeterRegion(cell.getStringCellValue());
 	                	}
 	                }
+	                if(cellindex==8) {
+	                	if (cell.getCellTypeEnum() == CellType.STRING) {
+	                		summaryTableOneRow.setResourceGroup(cell.getStringCellValue());
+	                	}
+	                }
+	                if(cellindex==9) {
+	                	if (cell.getCellTypeEnum() == CellType.STRING) {
+	                		summaryTableOneRow.setInstanceId(cell.getStringCellValue());
+	                	}
+	                }
 	                if(cellindex==16) {
 	                	if (cell.getCellTypeEnum() == CellType.NUMERIC) {
 	                		payg_1y=cell.getNumericCellValue();
@@ -154,7 +165,7 @@ public class FileUpload extends HttpServlet {
 	                }
 //	                writer.println("</td>");
 	            }
-	            System.out.println(summaryTableOneRow.getCustomerName()+summaryTableOneRow.getMeterName());
+	            //System.out.println(summaryTableOneRow.getCustomerName()+summaryTableOneRow.getMeterName());
 	            List<SummaryTableDataSet> collectionofSameClient = null;
 //	            writer.println("</tr>"); 
 		         if(uniqueClient.containsKey(summaryTableOneRow.getCustomerName())) {
@@ -168,26 +179,25 @@ public class FileUpload extends HttpServlet {
 	        	 uniqueClient.put(summaryTableOneRow.getCustomerName(), collectionofSameClient);
 	            
 	        }
-	        writer.println("<html><body>");
-	        writer.println("<select id='customername'"+">");
-	        for(Map.Entry<String, List> entry : uniqueClient.entrySet())
-	        	writer.println("<option value="+entry.getKey()+">"+entry.getKey()+"</option>");
-	        writer.println("</select>");
-	       System.out.print("test");
-//	        writer.println("</table>");
+	        HttpSession session = request.getSession();
+	        session.setAttribute("collectionObject", uniqueClient);
+	        writer.println("<html><body><form action='showReportPerClient.jsp' method=\"post\">");
+	        writer.println("<select id='customername'"+" name='customerName'>");
+	        for(Map.Entry<String, List> entry : uniqueClient.entrySet()) {
+	        	if(entry.getKey().equals("Customer"))
+	        	{
+	        		writer.println("<option value='"+entry.getKey()+"' selected>"+entry.getKey()+"</option>");
+	        	}else {
+	        		writer.println("<option value='"+entry.getKey()+"'>"+entry.getKey()+"</option>");
+	        	}
+	        }
+	        writer.println("</select><button type=submit value=Submit>Show</button></form>");
 	        
-	        
-//	        LOGGER.log(Level.INFO, "File{0}being uploaded to {1}", 
-//	                new Object[]{fileName, path});
 	    } catch (FileNotFoundException fne) {
 	        writer.println("You either did not specify a file to upload or are "
 	                + "trying to upload a file to a protected or nonexistent "
 	                + "location.");
 	        writer.println("<br/> ERROR: " + fne.getMessage());
-
-	        
-//	        LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}", 
-//	                new Object[]{fne.getMessage()});
 	    } finally {
 	        if (out != null) {
 	            out.close();
