@@ -65,8 +65,6 @@ public class FileUpload extends HttpServlet {
 //		String yourName = request.getParameter("excelfile");
 		response.setContentType("text/html;charset=UTF-8");
 
-	    // Create path components to save the file
-	    final String path = "/temp";
 	    final Part filePart = request.getPart("excelfile");
 	    final String fileName = getFileName(filePart);
 
@@ -75,8 +73,7 @@ public class FileUpload extends HttpServlet {
 	    final PrintWriter writer = response.getWriter();
 
 	    try {
-	        out = new FileOutputStream(new File(path + File.separator
-	                + fileName));
+	        out = new FileOutputStream(new File(fileName));
 	        filecontent = filePart.getInputStream();
 
 	        int read = 0;
@@ -90,7 +87,7 @@ public class FileUpload extends HttpServlet {
 	        
 	        //FileInputStream fis = new FileInputStream(myFile);
 	        // Finds the workbook instance for XLSX file
-	        XSSFWorkbook myWorkBook = new XSSFWorkbook (path + File.separator + fileName);
+	        XSSFWorkbook myWorkBook = new XSSFWorkbook (fileName);
 
 	        // Return first sheet from the XLSX workbook
 	        XSSFSheet mySheet = myWorkBook.getSheetAt(0);
