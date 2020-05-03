@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Ingram Micro</title>
 </head>
 <% 
 Map<String, List<SummaryTableDataSet>> collectionObject=(HashMap<String, List<SummaryTableDataSet>>)request.getSession().getAttribute("collectionObject");
@@ -23,6 +23,7 @@ List<SummaryTableDataSet> objectofOneClient = (List<SummaryTableDataSet>)collect
 <body>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
+<center>
 <table style="height: 281px;" border="1" width="597">
 <tbody>
 <tr>
@@ -34,6 +35,7 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 </tr>
 </tbody>
 </table>
+</center>
 <h1 style="text-align: center;"><%=selectedClientName %></h1>
 <p style="text-align: center;">Recommendation Generated on Date</p>
 <table style="height: 71px;" width="591">
