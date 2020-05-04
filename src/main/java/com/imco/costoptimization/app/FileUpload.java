@@ -104,7 +104,12 @@ public class FileUpload extends HttpServlet {
 	            // For each row, iterate through each columns
 	            Iterator<Cell> cellIterator = row.cellIterator();
 	            double payg_1y=0.0;
+	            double PAYG_3Y_t=0.0;
             	double ri_1y_PaygPrice=0.0;
+            	double RI_3Y_PAYGPrice_t=0.0;
+                double BreakEvenMonths_3YR_t=0.0;
+            	double RI_3Y_Savings_PAYG_t=0.0;
+            	double UnitPrice_PAYG_t =0.0;
 	            while (cellIterator.hasNext()) {
 //	            	writer.println("<td>");
 	            	
@@ -150,6 +155,42 @@ public class FileUpload extends HttpServlet {
 	                	if (cell.getCellTypeEnum() == CellType.NUMERIC) {
 	                		ri_1y_PaygPrice=cell.getNumericCellValue();
 	                		summaryTableOneRow.setRi_1Y_PAYGPrice(ri_1y_PaygPrice);
+	                	}
+	                }
+	               
+	                if(cellindex==15) {
+	                	if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+	                		UnitPrice_PAYG_t=cell.getNumericCellValue();
+	                		summaryTableOneRow.setUnitPrice_PAYG(UnitPrice_PAYG_t);
+	                		
+	                	}
+	                }
+	                
+	                if(cellindex==25) {
+	                	if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+	                		PAYG_3Y_t=cell.getNumericCellValue();
+	                		summaryTableOneRow.setPAYG_3Y(PAYG_3Y_t);
+	                		
+	                	}
+	                }
+	                
+	                if(cellindex==28) {
+	                	if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+	                		RI_3Y_PAYGPrice_t=cell.getNumericCellValue();
+	                		summaryTableOneRow.setRI_3Y_PAYGPrice(RI_3Y_PAYGPrice_t);
+	                	}
+	                }
+	                
+	                if(cellindex==29) {
+	                	if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+	                		RI_3Y_Savings_PAYG_t=cell.getNumericCellValue();
+	                		summaryTableOneRow.setRI_3Y_Savings_PAYG(RI_3Y_Savings_PAYG_t);
+	                	}
+	                }
+	                if(cellindex==33) {
+	                	if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+	                		BreakEvenMonths_3YR_t=cell.getNumericCellValue();
+	                		summaryTableOneRow.setBreakEvenMonths_3YR(BreakEvenMonths_3YR_t);
 	                	}
 	                }
 	                summaryTableOneRow.setRi_1Y_Savings_PAYG(payg_1y-ri_1y_PaygPrice);
