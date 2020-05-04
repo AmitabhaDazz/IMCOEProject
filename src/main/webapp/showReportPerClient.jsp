@@ -14,7 +14,7 @@
          Double x=222.0,avg=0.0,count=0.0,count2=0.0;
          Double payg1y=0.0, ri1ypayg=0.0, ri1ysaving=0.0;
          Double ri3ysaving_total=0.0,unitPlace3y=0.0;
-         Double avg3y=0.0,sumbreak3y=0.0,break3y=0.0,payg3y=0.0,ri3ypayg=0.0,ri3ysaving=0.0;
+         Double avg3y=0.0,unitPlace1y=0.0,sumbreak3y=0.0,break3y=0.0,payg3y=0.0,ri3ypayg=0.0,ri3ysaving=0.0;
       	int count3y=0;
       %>
 
@@ -196,7 +196,7 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 		out.println("<tr>");
     	out.println("<td>"+eachObject.getResourceGroup()+"</td>");
     	out.println("<td>"+eachObject.getInstanceId()+"</td>");
-    	out.println("<td>"+5+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getUnitPrice_PAYG()*100.0)/100.0+"</td>");
     	out.println("<td>"+Math.round(eachObject.getPayG_1y()*100.0)/100.0+"</td>");
     	out.println("<td>"+Math.round(eachObject.getRi_1Y_PAYGPrice()*100.0)/100.0+"</td>");
     	out.println("<td>"+Math.round((eachObject.getPayG_1y()-eachObject.getRi_1Y_PAYGPrice()) * 100.0) / 100.0+"</td>");
@@ -205,13 +205,14 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
     	payg1y=payg1y+eachObject.getPayG_1y();
     	ri1ypayg=ri1ypayg+eachObject.getRi_1Y_PAYGPrice();
     	ri1ysaving=ri1ysaving+(eachObject.getPayG_1y()-eachObject.getRi_1Y_PAYGPrice());
- 	}
+    	unitPlace1y=unitPlace1y+eachObject.getUnitPrice_PAYG();
+	}
+	
 %> 
 <tr>
 <th style="width: 64px;"><b>Total</b></th>
 <td style="width: 64px;">&nbsp;</td>
-<td style="width: 64px;">&nbsp;</td>
-
+<td style="width: 64px;"><b><%out.println(Math.round(unitPlace1y*100.0)/100.0); %></b></td>
 <td style="width: 64px;"><b><%out.println(Math.round(payg1y*100.0)/100.0); %></b></td>
 <td style="width: 64px;"><b><%out.println(Math.round(ri1ypayg*100.0)/100.0); %></b></td>
 <td style="width: 64px;"><b><% out.println(Math.round(ri1ysaving*100.0)/100.0); %></b></td>
