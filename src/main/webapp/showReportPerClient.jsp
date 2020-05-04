@@ -4,7 +4,19 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
-
+<%@ page import = "java.io.*,java.util.*, javax.servlet.*" %>
+<%@ page import = "java.util.stream.Stream " %>
+<%
+         Date date = new Date();
+         Double payg1y_total=0.0,payg3y_total=0.0;
+         Double ripayg1y_total=0.0, ripayg3y_total=0.0;
+         Double ri1ysaving_total=0.0;
+         Double x=222.0,avg=0.0,count=0.0,count2=0.0;
+         Double payg1y=0.0, ri1ypayg=0.0, ri1ysaving=0.0;
+         Double ri3ysaving_total=0.0,unitPlace3y=0.0;
+         Double avg3y=0.0,sumbreak3y=0.0,break3y=0.0,payg3y=0.0,ri3ypayg=0.0,ri3ysaving=0.0;
+      	int count3y=0;
+      %>
 
 <%@ page import="com.imco.costoptimization.app.SummaryTableDataSet" %>
 <!DOCTYPE html>
@@ -13,11 +25,38 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Ingram Micro</title>
+<style type="text/css">
+
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #000000;
+  color: white;
+}
+</style>
 </head>
 <% 
 Map<String, List<SummaryTableDataSet>> collectionObject=(HashMap<String, List<SummaryTableDataSet>>)request.getSession().getAttribute("collectionObject");
 String selectedClientName = request.getParameter("customerName");
 List<SummaryTableDataSet> objectofOneClient = (List<SummaryTableDataSet>)collectionObject.get(selectedClientName);
+List<SummaryTableDataSet> objectofOneClient_temp = (List<SummaryTableDataSet>)collectionObject.get(selectedClientName);
+
 %>
 
 <body>
@@ -37,50 +76,95 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 </table>
 </center>
 <h1 style="text-align: center;"><%=selectedClientName %></h1>
-<p style="text-align: center;">Recommendation Generated on Date</p>
+<p style="text-align: center;">Recommendation Generated on <%out.print(date.toString()); %></p>
 <table style="height: 71px;" width="591">
 <tbody>
 <tr>
-<td style="width: 581px;">
-<p>Ingram Micro Azure Reserved Instances Recommendation Report</p>
-<h2>1 Yrs Upfront Purchase recommendations(Compute Only)</h2>
+<br>
+<td  >
+<p class="ridge">Ingram Micro Azure Reserved Instances Recommendation Report<br>
+1 Yrs Upfront Purchase recommendations(Compute Only)</p>
 </td>
 </tr>
 </tbody>
 </table>
 <p>&nbsp;</p>
 
-<table border="1" colspan='1' style="height: 213px;" width="100%" class="w3-table-all">
+<table border="1" colspan='1' id="customers">
 <center>
 <tbody>
 <tr>
 <td style="width: 581px;">
-<table style="height: 81px;" width="572">
+<table style="height: 81px;" width="572" id="customers">
 <tbody>
 <tr>
-<td style="width: 65px; text-align: center;">Subscription</td>
-<td style="width: 65px; text-align: center;">Meter Name</td>
-<td style="width: 65px; text-align: center;">Meter Region</td>
-<td style="width: 65px; text-align: center;">Count of Meter name</td>
-<td style="width: 65px; text-align: center;">PAYG_1Y</td>
-<td style="width: 65px; text-align: center;">RI_1Y_PAYGPrice</td>
-<td style="width: 65px; text-align: center;">1Y Savings</td>
-<td style="width: 65px; text-align: center;">BreakEven</td>
+<th style="width: 65px; text-align: center;">Subscription</th>
+<th style="width: 65px; text-align: center;">Meter Name</th>
+<th style="width: 65px; text-align: center;">Meter Region</th>
+
+<th style="width: 65px; text-align: center;">PAYG_1Y</th>
+<th style="width: 65px; text-align: center;">RI_1Y_PAYGPrice</th>
+<th style="width: 65px; text-align: center;">1Y Savings</th>
+<th style="width: 65px; text-align: center;">BreakEven</th>
 </tr>
 <%
 	for (SummaryTableDataSet eachObject : objectofOneClient) {
+		
+		String meter_name = eachObject.getMeterName();
+		int count_i=0,j=0;
+		String meternm="";
+		String[] mtr={};
+		for (SummaryTableDataSet eachObject1 : objectofOneClient) {
+			if(meter_name.equals(eachObject1.getMeterName())){
+				count_i++;
+				meternm=eachObject1.getMeterName();
+				if(count_i>1){
+					mtr[j]=meternm;
+					j++;
+				}
+			}
+			
+			count_i=0;
+			
+		}
+		for(int k=0; k<mtr.length;k++){
+			out.println(mtr[j]);
+		}
+		payg1y_total=payg1y_total+eachObject.getPayG_1y();
+		ripayg1y_total=ripayg1y_total+eachObject.getRi_1Y_PAYGPrice();
+		ri1ysaving_total=ri1ysaving_total+eachObject.getRi_1Y_Savings_PAYG();
+		avg=avg+(eachObject.getRi_1Y_PAYGPrice()/eachObject.getPayG_1y()*12);
+		count++;
+		
 		out.println("<tr>");
     	out.println("<td>"+eachObject.getSubscription()+"</td>");
     	out.println("<td>"+eachObject.getMeterName()+"</td>");
     	out.println("<td>"+eachObject.getMeterRegion()+"</td>");
-    	out.println("<td>1</td>");
-    	out.println("<td>"+eachObject.getPayG_1y()+"</td>");
-    	out.println("<td>"+eachObject.getRi_1Y_PAYGPrice()+"</td>");
-    	out.println("<td>"+eachObject.getRi_1Y_Savings_PAYG()+"</td>");
-    	out.println("<td>7</td>");
+    	//out.println("<td>"+5+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getPayG_1y()*100.0)/100.0+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getRi_1Y_PAYGPrice() * 100.0) / 100.0+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getRi_1Y_Savings_PAYG() * 100.0) / 100.0+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getRi_1Y_PAYGPrice()/eachObject.getPayG_1y()*12*100.0)/100.0+"</td>");
     	out.println("</tr>");
+    	
  	}
-%>  
+	avg=avg/count;
+	avg=Math.round(avg*100.0)/100.0;
+	count=0.0;
+	payg1y_total=Math.round(payg1y_total*100.0)/100.0;
+	ripayg1y_total=Math.round(ripayg1y_total*100.0)/100.0;
+	ri1ysaving_total=Math.round(ri1ysaving_total*100.0)/100.0;
+%> 
+<tr>
+<th style="width: 65px; text-align: center;">Total</th>
+<td style="width: 65px; text-align: center;"></td>
+
+<td style="width: 65px; text-align: center;"></td>
+<td style="width: 65px; text-align: center;"><b><% out.println(payg1y_total); %></b></td>
+<td style="width: 65px; text-align: center;"><b><% out.println(ripayg1y_total); %></b></td>
+<td style="width: 65px; text-align: center;"><b><% out.println(ri1ysaving_total); %></b></td>
+<td style="width: 65px; text-align: center;"><b><%out.println(avg); %></b></td>
+</tr> 
 </tbody>
 </center>
 </table>
@@ -90,31 +174,178 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 </tbody>
 </table>
 <p><strong>&nbsp;</strong></p>
-<table style="height: 175px;" width="586">
+<table id="customers">
 <tbody>
 <tr>
 <td style="width: 576px;">
 <table style="height: 56px;" width="565">
 <tbody>
 <tr>
-<td style="width: 64px; text-align: center;">Resource Group</td>
-<td style="width: 64px; text-align: center;">Instance ID</td>
-<td style="width: 64px; text-align: center;">Unit Price PAYG</td>
-<td style="width: 64px; text-align: center;">PAYG 1 Y</td>
-<td style="width: 64px; text-align: center;">RI 1Y</td>
-<td style="width: 64px; text-align: center;">Savings</td>
-<td style="width: 64px; text-align: center;">Meter Name</td>
+<th style="width: 64px; text-align: center;">Resource Group</th>
+<th style="width: 64px; text-align: center;">Instance ID</th>
+<th style="width: 64px; text-align: center;">Unit Price PAYG</th>
+<th style="width: 64px; text-align: center;">PAYG 1 Y</th>
+<th style="width: 64px; text-align: center;">RI 1Y</th>
+<th style="width: 64px; text-align: center;">Savings</th>
+<th style="width: 64px; text-align: center;">Meter Name</th>
+<th style="width: 65px;">&nbsp;</th>
+</tr>
+<%
+	for (SummaryTableDataSet eachObject : objectofOneClient) {
+		count2++;
+		out.println("<tr>");
+    	out.println("<td>"+eachObject.getResourceGroup()+"</td>");
+    	out.println("<td>"+eachObject.getInstanceId()+"</td>");
+    	out.println("<td>"+5+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getPayG_1y()*100.0)/100.0+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getRi_1Y_PAYGPrice()*100.0)/100.0+"</td>");
+    	out.println("<td>"+Math.round((eachObject.getPayG_1y()-eachObject.getRi_1Y_PAYGPrice()) * 100.0) / 100.0+"</td>");
+    	out.println("<td>"+eachObject.getMeterName()+"</td>");
+    	out.println("</tr>");
+    	payg1y=payg1y+eachObject.getPayG_1y();
+    	ri1ypayg=ri1ypayg+eachObject.getRi_1Y_PAYGPrice();
+    	ri1ysaving=ri1ysaving+(eachObject.getPayG_1y()-eachObject.getRi_1Y_PAYGPrice());
+ 	}
+%> 
+<tr>
+<th style="width: 64px;"><b>Total</b></th>
+<td style="width: 64px;">&nbsp;</td>
+<td style="width: 64px;">&nbsp;</td>
+
+<td style="width: 64px;"><b><%out.println(Math.round(payg1y*100.0)/100.0); %></b></td>
+<td style="width: 64px;"><b><%out.println(Math.round(ri1ypayg*100.0)/100.0); %></b></td>
+<td style="width: 64px;"><b><% out.println(Math.round(ri1ysaving*100.0)/100.0); %></b></td>
 <td style="width: 65px;">&nbsp;</td>
 </tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<table style="height: 71px;" width="591">
+<tbody>
 <tr>
+<td style="width: 581px;">
+<p>Ingram Micro Azure Reserved Instances Recommendation Report</p>
+<h2>3 Yrs Upfront Purchase recommendations(Compute Only)</h2>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+
+
+
+<table border="1" colspan='1' style="height: 213px;" width="100%" class="w3-table-all">
+<center>
+<tbody>
+<tr>
+<td style="width: 581px;">
+<table id="customers">
+<tbody>
+<tr>
+<th style="width: 65px; text-align: center;">Subscription</th>
+<th style="width: 65px; text-align: center;">Meter Name</th>
+<th style="width: 65px; text-align: center;">Meter Region</th>
+
+<th style="width: 65px; text-align: center;">PAYG_3Y</th>
+<th style="width: 65px; text-align: center;">RI_3Y_PAYGPrice</th>
+<th style="width: 65px; text-align: center;">RI_3Y_Saving_PAYGPrice</th>
+<th style="width: 65px; text-align: center;">BreakEven_Month_3Y</th>
+</tr>
+<%
+	for (SummaryTableDataSet eachObject : objectofOneClient) {
+		
+		payg3y_total=payg3y_total+eachObject.getPAYG_3Y();
+		ripayg3y_total=ripayg3y_total+eachObject.getRI_3Y_PAYGPrice();
+		ri3ysaving_total=ri3ysaving_total+eachObject.getRI_3Y_Savings_PAYG();
+		avg3y=avg3y+(eachObject.getRI_3Y_PAYGPrice()/eachObject.getPAYG_3Y()*12);
+		count3y++;
+		out.println("<tr>");
+    	out.println("<td>"+eachObject.getSubscription()+"</td>");
+    	out.println("<td>"+eachObject.getMeterName()+"</td>");
+    	out.println("<td>"+eachObject.getMeterRegion()+"</td>");
+    	//out.println("<td>test</td>");
+    	
+    	out.println("<td>"+eachObject.getPAYG_3Y()+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getRI_3Y_PAYGPrice() * 100.0) / 100.0+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getRI_3Y_Savings_PAYG() * 100.0) / 100.0+"</td>");
+    	break3y=Math.round(eachObject.getRI_3Y_PAYGPrice()/eachObject.getPAYG_3Y()*36*100.0)/100.0;
+    	sumbreak3y=sumbreak3y+break3y;
+    	out.println("<td>"+break3y+"</td>");
+    	out.println("</tr>");
+    	
+ 	}
+	avg3y=sumbreak3y/count3y++;
+	avg3y=Math.round(avg3y*100.0)/100.0;
+	count3y=0;
+	payg3y_total=Math.round(payg3y_total*100.0)/100.0;
+	ripayg3y_total=Math.round(ripayg3y_total*100.0)/100.0;
+	ri3ysaving_total=Math.round(ri3ysaving_total*100.0)/100.0;
+%> 
+<tr>
+<th style="width: 65px; text-align: center;">Total</th>
+
+<td style="width: 65px; text-align: center;"></td>
+<td style="width: 65px; text-align: center;"></td>
+<td style="width: 65px; text-align: center;"><b><% out.println(payg3y_total); %></b></td>
+<td style="width: 65px; text-align: center;"><b><% out.println(ripayg3y_total); %></b></td>
+<td style="width: 65px; text-align: center;"><b><% out.println(ri3ysaving_total); %></b></td>
+<td style="width: 65px; text-align: center;"><b><%out.println(avg3y); %></b></td>
+</tr> 
+</tbody>
+</center>
+</table>
+
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>&nbsp;</strong></p>
+<table id="customers">
+<tbody>
+<tr>
+<td style="width: 576px;">
+<table style="height: 56px;" width="565">
+<tbody>
+<tr>
+<th style="width: 64px; text-align: center;">Resource Group</th>
+<th style="width: 64px; text-align: center;">Instance ID</th>
+<th style="width: 64px; text-align: center;">Unit Price PAYG</th>
+<th style="width: 64px; text-align: center;">PAYG 3 Y</th>
+<th style="width: 64px; text-align: center;">RI 3 Y</th>
+<th style="width: 64px; text-align: center;">Savings</th>
+<th style="width: 64px; text-align: center;">Meter Name</th>
+
+</tr>
+<%
+	for (SummaryTableDataSet eachObject : objectofOneClient) {
+		count2++;
+		out.println("<tr>");
+    	out.println("<td>"+eachObject.getResourceGroup()+"</td>");
+    	out.println("<td>"+eachObject.getInstanceId()+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getUnitPrice_PAYG()*100.0)/100.0+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getPAYG_3Y()*100.0)/100.0+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getRI_3Y_PAYGPrice()*100.0)/100.0+"</td>");
+    	out.println("<td>"+Math.round((eachObject.getPAYG_3Y()-eachObject.getRI_3Y_PAYGPrice()) * 100.0) / 100.0+"</td>");
+    	out.println("<td>"+eachObject.getMeterName()+"</td>");
+    	out.println("</tr>");
+    	payg3y=payg3y+eachObject.getPAYG_3Y();
+    	ri3ypayg=ri3ypayg+eachObject.getRI_3Y_PAYGPrice();
+    	ri3ysaving=ri3ysaving+(eachObject.getPAYG_3Y()-eachObject.getRI_3Y_PAYGPrice());
+    	unitPlace3y=unitPlace3y+eachObject.getUnitPrice_PAYG();
+ 	}
+%> 
+<tr>
+<td style="width: 64px;"><b>Total</b></td>
 <td style="width: 64px;">&nbsp;</td>
-<td style="width: 64px;">&nbsp;</td>
-<td style="width: 64px;">&nbsp;</td>
-<td style="width: 64px;">&nbsp;</td>
-<td style="width: 64px;">&nbsp;</td>
-<td style="width: 64px;">&nbsp;</td>
-<td style="width: 64px;">&nbsp;</td>
-<td style="width: 65px;">&nbsp;</td>
+<td style="width: 64px;"><b><%out.println(Math.round(unitPlace3y*100.0)/100.0); %></b></td>
+<td style="width: 64px;"><b><%out.println(Math.round(payg3y*100.0)/100.0); %></b></td>
+<td style="width: 64px;"><b><%out.println(Math.round(ri3ypayg*100.0)/100.0); %></b></td>
+<td style="width: 64px;"><b><% out.println(Math.round(ri3ysaving*100.0)/100.0); %></b></td>
+<td style="width: 64px;"></td>
+
 </tr>
 </tbody>
 </table>
