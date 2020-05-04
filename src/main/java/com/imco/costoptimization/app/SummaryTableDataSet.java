@@ -8,7 +8,43 @@ public class SummaryTableDataSet {
 	private String meterRegion;			// 4
 	private String resourceGroup;		// 9
 	private String instanceId;			//10
-public String getResourceGroup() {
+	private Double UnitPrice_PAYG;		//16
+	private Double PAYG_3Y;				//Z
+	private Double RI_3Y_PAYGPrice;		//AC
+	private Double RI_3Y_Savings_PAYG;	//AD
+	private Double BreakEvenMonths_3YR;	//AH =ROUND(36*(AC42/Z42),0)
+	
+	public Double getUnitPrice_PAYG() {
+		return UnitPrice_PAYG;
+	}
+	public void setUnitPrice_PAYG(Double unitPrice_PAYG) {
+		UnitPrice_PAYG = unitPrice_PAYG;
+	}
+	public Double getPAYG_3Y() {
+		return PAYG_3Y;
+	}
+	public void setPAYG_3Y(Double pAYG_3Y) {
+		PAYG_3Y = pAYG_3Y;
+	}
+	public Double getRI_3Y_PAYGPrice() {
+		return RI_3Y_PAYGPrice;
+	}
+	public void setRI_3Y_PAYGPrice(Double rI_3Y_PAYGPrice) {
+		RI_3Y_PAYGPrice = rI_3Y_PAYGPrice;
+	}
+	public Double getRI_3Y_Savings_PAYG() {
+		return RI_3Y_Savings_PAYG;
+	}
+	public void setRI_3Y_Savings_PAYG(Double rI_3Y_Savings_PAYG) {
+		RI_3Y_Savings_PAYG = rI_3Y_Savings_PAYG;
+	}
+	public Double getBreakEvenMonths_3YR() {
+		return BreakEvenMonths_3YR;
+	}
+	public void setBreakEvenMonths_3YR(Double breakEvenMonths_3YR) {
+		BreakEvenMonths_3YR = breakEvenMonths_3YR;
+	}
+	public String getResourceGroup() {
 		return resourceGroup;
 	}
 	public void setResourceGroup(String resourceGroup) {
