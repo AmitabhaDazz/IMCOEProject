@@ -189,7 +189,6 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 <th style="width: 64px; text-align: center;">RI 1Y</th>
 <th style="width: 64px; text-align: center;">Savings</th>
 <th style="width: 64px; text-align: center;">Meter Name</th>
-<th style="width: 65px;">&nbsp;</th>
 </tr>
 <%
 	for (SummaryTableDataSet eachObject : objectofOneClient) {
@@ -269,7 +268,7 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
     	out.println("<td>"+eachObject.getMeterRegion()+"</td>");
     	//out.println("<td>test</td>");
     	
-    	out.println("<td>"+eachObject.getPAYG_3Y()+"</td>");
+    	out.println("<td>"+Math.round(eachObject.getPAYG_3Y()* 100.0) / 100.0+"</td>");
     	out.println("<td>"+Math.round(eachObject.getRI_3Y_PAYGPrice() * 100.0) / 100.0+"</td>");
     	out.println("<td>"+Math.round(eachObject.getRI_3Y_Savings_PAYG() * 100.0) / 100.0+"</td>");
     	break3y=Math.round(eachObject.getRI_3Y_PAYGPrice()/eachObject.getPAYG_3Y()*36*100.0)/100.0;
