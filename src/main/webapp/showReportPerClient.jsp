@@ -26,22 +26,16 @@
 <meta charset="ISO-8859-1">
 <title>Ingram Micro</title>
 <style type="text/css">
-
 #customers {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
-
 #customers td, #customers th {
   border: 1px solid #ddd;
   padding: 8px;
 }
-
 #customers tr:nth-child(even){background-color: #f2f2f2;}
-
-
-
 #customers th {
 -webkit-print-color-adjust: exact;
   padding-top: 12px;
@@ -57,7 +51,6 @@ Map<String, List<SummaryTableDataSet>> collectionObject=(HashMap<String, List<Su
 String selectedClientName = request.getParameter("customerName");
 List<SummaryTableDataSet> objectofOneClient = (List<SummaryTableDataSet>)collectionObject.get(selectedClientName);
 List<SummaryTableDataSet> objectofOneClient_temp = (List<SummaryTableDataSet>)collectionObject.get(selectedClientName);
-
 %>
 
 <body>
@@ -109,6 +102,69 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 <th style="width: 65px; text-align: center;">BreakEven</th>
 </tr>
 <%
+
+//unique meter name
+	int count1y=0,j1=0;
+	double payg1=0.0,paygri1=0.0,savingspayg1=0.0, breakevn=0.0;
+	ArrayList<String> travesedmetername = new ArrayList<String>();
+	String sub="", mn="", mr="";
+	int cn;
+	
+	int[] countcontainer = new int[20];
+	int cnf=1,x1=1;
+	String tempmetername;
+	for (SummaryTableDataSet eachObject1 : objectofOneClient) {
+		if(j1==0){
+			travesedmetername.add(eachObject1.getMeterName());
+			
+			countcontainer[j1]=cnf;
+			j1++;
+		}
+		else{
+			for(int i=0;i<travesedmetername.size();i++){
+				tempmetername=eachObject1.getMeterName();
+				if(travesedmetername.contains(tempmetername)){
+					cnf++;
+				}else{
+					travesedmetername.add(tempmetername);
+					x1++;
+					j1++;
+				}
+				
+			}
+			countcontainer[x1]=cnf;
+		}
+		cnf=1;
+	}
+	for(int i=0;i<travesedmetername.size();i++){
+		for (SummaryTableDataSet eo : objectofOneClient) {
+			if(travesedmetername.get(i).equals(eo.getMeterName())){
+				savingspayg1=savingspayg1+eo.getRi_1Y_Savings_PAYG();
+				payg1=payg1+eo.getPayG_1y();
+				paygri1=paygri1+eo.getRi_1Y_PAYGPrice();
+				sub=eo.getSubscription();
+				mn=eo.getMeterName();
+				mr=eo.getMeterRegion();
+			}
+		}
+		System.out.println(countcontainer[i]);
+		
+		out.println("<tr>");
+    	out.println("<td>"+sub+"</td>");
+    	out.println("<td>"+mn+"</td>");
+    	out.println("<td>"+mr+"</td>");
+    	out.println("<td>"+Math.round(payg1*100.0)/100.0+"</td>");
+    	out.println("<td>"+Math.round(paygri1 * 100.0) / 100.0+"</td>");
+    	out.println("<td>"+Math.round(savingspayg1 * 100.0) / 100.0+"</td>");
+    	out.println("<td>"+Math.round(paygri1/payg1*12*100.0)/100.0+"</td>");
+    	out.println("</tr>");
+    	payg1=0.0;
+		paygri1=0.0;
+		savingspayg1=0.0;
+	}
+	//end
+
+
 	for (SummaryTableDataSet eachObject : objectofOneClient) {
 		
 		String meter_name = eachObject.getMeterName();
@@ -137,7 +193,7 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 		avg=avg+(eachObject.getRi_1Y_PAYGPrice()/eachObject.getPayG_1y()*12);
 		count++;
 		
-		out.println("<tr>");
+		/* out.println("<tr>");
     	out.println("<td>"+eachObject.getSubscription()+"</td>");
     	out.println("<td>"+eachObject.getMeterName()+"</td>");
     	out.println("<td>"+eachObject.getMeterRegion()+"</td>");
@@ -146,9 +202,9 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
     	out.println("<td>"+Math.round(eachObject.getRi_1Y_PAYGPrice() * 100.0) / 100.0+"</td>");
     	out.println("<td>"+Math.round(eachObject.getRi_1Y_Savings_PAYG() * 100.0) / 100.0+"</td>");
     	out.println("<td>"+Math.round(eachObject.getRi_1Y_PAYGPrice()/eachObject.getPayG_1y()*12*100.0)/100.0+"</td>");
-    	out.println("</tr>");
+    	out.println("</tr>"); */
     	
- 	}
+ 	} 
 	avg=avg/count;
 	avg=Math.round(avg*100.0)/100.0;
 	count=0.0;
@@ -256,6 +312,53 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 <th style="width: 65px; text-align: center;">BreakEven_Month_3Y</th>
 </tr>
 <%
+
+
+//unique meter name
+	int count3ys=0,j2y=0;
+	double payg3=0.0,paygri3=0.0,savingspayg3=0.0, breakevn3y=0.0;
+	//ArrayList<String> travesedmetername3y = new ArrayList<String>();
+	String sub3y="", mn3y="", mr3y="";
+	int cn3y;
+	
+	String tempmetername3y;
+	
+	for(int i=0;i<travesedmetername.size();i++){
+		for (SummaryTableDataSet eo : objectofOneClient) {
+			if(travesedmetername.get(i).equals(eo.getMeterName())){
+				savingspayg3=savingspayg3+eo.getRI_3Y_Savings_PAYG();
+				payg3=payg3+eo.getPAYG_3Y();
+				paygri3=paygri3+eo.getRI_3Y_PAYGPrice();
+				sub=eo.getSubscription();
+				mn=eo.getMeterName();
+				mr=eo.getMeterRegion();
+			}
+		}
+		//System.out.println(travesedmetername.get(i)+"payg\t"+payg1+"paygri1\t"+paygri1);
+		
+		out.println("<tr>");
+  	out.println("<td>"+sub+"</td>");
+  	out.println("<td>"+mn+"</td>");
+  	out.println("<td>"+mr+"</td>");
+  	out.println("<td>"+Math.round(payg3*100.0)/100.0+"</td>");
+  	out.println("<td>"+Math.round(paygri3 * 100.0) / 100.0+"</td>");
+  	out.println("<td>"+Math.round(savingspayg3 * 100.0) / 100.0+"</td>");
+  	out.println("<td>"+Math.round(paygri3/payg3*36*100.0)/100.0+"</td>");
+  	out.println("</tr>");
+  	payg3=0.0;
+  	paygri3=0.0;
+  	savingspayg3=0.0;
+	}
+	//end
+
+
+
+
+
+
+
+
+
 	for (SummaryTableDataSet eachObject : objectofOneClient) {
 		
 		payg3y_total=payg3y_total+eachObject.getPAYG_3Y();
@@ -263,19 +366,19 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 		ri3ysaving_total=ri3ysaving_total+eachObject.getRI_3Y_Savings_PAYG();
 		avg3y=avg3y+(eachObject.getRI_3Y_PAYGPrice()/eachObject.getPAYG_3Y()*12);
 		count3y++;
-		out.println("<tr>");
+		 /* out.println("<tr>");
     	out.println("<td>"+eachObject.getSubscription()+"</td>");
     	out.println("<td>"+eachObject.getMeterName()+"</td>");
     	out.println("<td>"+eachObject.getMeterRegion()+"</td>");
-    	//out.println("<td>test</td>");
+    	out.println("<td>test</td>"); */
     	
-    	out.println("<td>"+Math.round(eachObject.getPAYG_3Y()* 100.0) / 100.0+"</td>");
-    	out.println("<td>"+Math.round(eachObject.getRI_3Y_PAYGPrice() * 100.0) / 100.0+"</td>");
-    	out.println("<td>"+Math.round(eachObject.getRI_3Y_Savings_PAYG() * 100.0) / 100.0+"</td>");
+    	//out.println("<td>"+Math.round(eachObject.getPAYG_3Y()* 100.0) / 100.0+"</td>");
+    	//out.println("<td>"+Math.round(eachObject.getRI_3Y_PAYGPrice() * 100.0) / 100.0+"</td>");
+    //	out.println("<td>"+Math.round(eachObject.getRI_3Y_Savings_PAYG() * 100.0) / 100.0+"</td>");
     	break3y=Math.round(eachObject.getRI_3Y_PAYGPrice()/eachObject.getPAYG_3Y()*36*100.0)/100.0;
     	sumbreak3y=sumbreak3y+break3y;
-    	out.println("<td>"+break3y+"</td>");
-    	out.println("</tr>");
+    //	out.println("<td>"+break3y+"</td>");
+    	//out.println("</tr>"); 
     	
  	}
 	avg3y=sumbreak3y/count3y++;
