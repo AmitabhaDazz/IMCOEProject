@@ -44,6 +44,7 @@
   background-color: #000000 ;
   color: white;
 }
+
 </style>
 </head>
 <% 
@@ -57,7 +58,7 @@ List<SummaryTableDataSet> objectofOneClient_temp = (List<SummaryTableDataSet>)co
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <center>
-<table style="height: 281px;" border="1" width="597">
+<table style="background-color:#e6f2ff; height: 281px;" border="1;" width="597px;" >
 <tbody>
 <tr>
 <td style="width: 587px; text-align: center;">
@@ -89,13 +90,13 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 <tbody>
 <tr>
 <td style="width: 581px;">
-<table style="height: 81px;" width="572" id="customers">
+<table style="height: 60px;" width="572" id="customers">
 <tbody>
 <tr>
 <th style="width: 65px; text-align: center;">Subscription</th>
 <th style="width: 65px; text-align: center;">Meter Name</th>
 <th style="width: 65px; text-align: center;">Meter Region</th>
-
+<th style="width: 90px; text-align: center;">Count of Meter Name</th>
 <th style="width: 65px; text-align: center;">PAYG_1Y</th>
 <th style="width: 65px; text-align: center;">RI_1Y_PAYGPrice</th>
 <th style="width: 65px; text-align: center;">1Y Savings</th>
@@ -109,7 +110,7 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 	ArrayList<String> travesedmetername = new ArrayList<String>();
 	String sub="", mn="", mr="";
 	int cn;
-	
+	int place=0,totalmeter=0;
 	int[] countcontainer = new int[20];
 	int cnf=1,x1=1;
 	String tempmetername;
@@ -117,22 +118,25 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 		if(j1==0){
 			travesedmetername.add(eachObject1.getMeterName());
 			
-			countcontainer[j1]=cnf;
+			countcontainer[place]=cnf;
 			j1++;
 		}
 		else{
-			for(int i=0;i<travesedmetername.size();i++){
+			
 				tempmetername=eachObject1.getMeterName();
 				if(travesedmetername.contains(tempmetername)){
 					cnf++;
+					countcontainer[place]=cnf;
 				}else{
 					travesedmetername.add(tempmetername);
 					x1++;
 					j1++;
+					place++;
+					countcontainer[place]=1;
 				}
 				
-			}
-			countcontainer[x1]=cnf;
+			
+			
 		}
 		cnf=1;
 	}
@@ -147,12 +151,13 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 				mr=eo.getMeterRegion();
 			}
 		}
-		System.out.println(countcontainer[i]);
-		
+		//System.out.println(countcontainer[i]);
+		totalmeter=totalmeter+countcontainer[i];
 		out.println("<tr>");
     	out.println("<td>"+sub+"</td>");
     	out.println("<td>"+mn+"</td>");
     	out.println("<td>"+mr+"</td>");
+    	out.println("<td>"+countcontainer[i]+"</td>");
     	out.println("<td>"+Math.round(payg1*100.0)/100.0+"</td>");
     	out.println("<td>"+Math.round(paygri1 * 100.0) / 100.0+"</td>");
     	out.println("<td>"+Math.round(savingspayg1 * 100.0) / 100.0+"</td>");
@@ -215,12 +220,12 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 <tr>
 <th style="width: 65px; text-align: center;">Total</th>
 <td style="width: 65px; text-align: center;"></td>
-
 <td style="width: 65px; text-align: center;"></td>
-<td style="width: 65px; text-align: center;"><b><% out.println(payg1y_total); %></b></td>
-<td style="width: 65px; text-align: center;"><b><% out.println(ripayg1y_total); %></b></td>
-<td style="width: 65px; text-align: center;"><b><% out.println(ri1ysaving_total); %></b></td>
-<td style="width: 65px; text-align: center;"><b><%out.println(avg); %></b></td>
+<td style="width: 65px; "><b><% out.println(totalmeter); %></b></td>
+<td style="width: 65px; "><b><% out.println(payg1y_total); %></b></td>
+<td style="width: 65px; "><b><% out.println(ripayg1y_total); %></b></td>
+<td style="width: 65px; "><b><% out.println(ri1ysaving_total); %></b></td>
+<td style="width: 65px; "><b><%out.println(avg); %></b></td>
 </tr> 
 </tbody>
 </center>
@@ -235,12 +240,12 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 <tbody>
 <tr>
 <td style="width: 576px;">
-<table style="height: 56px;" width="565">
+<table style="height: 40px;" >
 <tbody>
 <tr>
 <th style="width: 64px; text-align: center;">Resource Group</th>
 <th style="width: 64px; text-align: center;">Instance ID</th>
-<th style="width: 64px; text-align: center;">Unit Price PAYG</th>
+<th style="width: 75px; text-align: center;">Unit Price PAYG</th>
 <th style="width: 64px; text-align: center;">PAYG 1 Y</th>
 <th style="width: 64px; text-align: center;">RI 1Y</th>
 <th style="width: 64px; text-align: center;">Savings</th>
@@ -280,7 +285,7 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 </tr>
 </tbody>
 </table>
-<table style="height: 71px;" width="591">
+<table style="height: 50px;" width="591">
 <tbody>
 <tr>
 <td style="width: 581px;">
@@ -294,7 +299,7 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 
 
 
-<table border="1" colspan='1' style="height: 213px;" width="100%" class="w3-table-all">
+<table border="1" colspan='1' style="height: 213px;" width="100%" class="w3-table-all" id="customers">
 <center>
 <tbody>
 <tr>
@@ -305,7 +310,7 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 <th style="width: 65px; text-align: center;">Subscription</th>
 <th style="width: 65px; text-align: center;">Meter Name</th>
 <th style="width: 65px; text-align: center;">Meter Region</th>
-
+<th style="width: 90px; text-align: center;">Count of Meter Name</th>
 <th style="width: 65px; text-align: center;">PAYG_3Y</th>
 <th style="width: 65px; text-align: center;">RI_3Y_PAYGPrice</th>
 <th style="width: 65px; text-align: center;">RI_3Y_Saving_PAYGPrice</th>
@@ -340,6 +345,7 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
   	out.println("<td>"+sub+"</td>");
   	out.println("<td>"+mn+"</td>");
   	out.println("<td>"+mr+"</td>");
+  	out.println("<td>"+countcontainer[i]+"</td>");
   	out.println("<td>"+Math.round(payg3*100.0)/100.0+"</td>");
   	out.println("<td>"+Math.round(paygri3 * 100.0) / 100.0+"</td>");
   	out.println("<td>"+Math.round(savingspayg3 * 100.0) / 100.0+"</td>");
@@ -393,10 +399,11 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 
 <td style="width: 65px; text-align: center;"></td>
 <td style="width: 65px; text-align: center;"></td>
-<td style="width: 65px; text-align: center;"><b><% out.println(payg3y_total); %></b></td>
-<td style="width: 65px; text-align: center;"><b><% out.println(ripayg3y_total); %></b></td>
-<td style="width: 65px; text-align: center;"><b><% out.println(ri3ysaving_total); %></b></td>
-<td style="width: 65px; text-align: center;"><b><%out.println(avg3y); %></b></td>
+<td style="width: 65px; "><b><% out.println(totalmeter); %></b></td>
+<td style="width: 65px;"><b><% out.println(payg3y_total); %></b></td>
+<td style="width: 65px; "><b><% out.println(ripayg3y_total); %></b></td>
+<td style="width: 65px; "><b><% out.println(ri3ysaving_total); %></b></td>
+<td style="width: 65px; "><b><%out.println(avg3y); %></b></td>
 </tr> 
 </tbody>
 </center>
@@ -410,13 +417,13 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
 <table id="customers">
 <tbody>
 <tr>
-<td style="width: 576px;">
-<table style="height: 56px;" width="565">
+<td style="width: 581px;">
+<table style="height: 56px;" >
 <tbody>
 <tr>
 <th style="width: 64px; text-align: center;">Resource Group</th>
 <th style="width: 64px; text-align: center;">Instance ID</th>
-<th style="width: 64px; text-align: center;">Unit Price PAYG</th>
+<th style="width: 84px; text-align: center;">Unit Price PAYG</th>
 <th style="width: 64px; text-align: center;">PAYG 3 Y</th>
 <th style="width: 64px; text-align: center;">RI 3 Y</th>
 <th style="width: 64px; text-align: center;">Savings</th>
@@ -440,6 +447,8 @@ Buy Virtual Machine reserved instances to save money over pay-as-you-go costs.
     	ri3ysaving=ri3ysaving+(eachObject.getPAYG_3Y()-eachObject.getRI_3Y_PAYGPrice());
     	unitPlace3y=unitPlace3y+eachObject.getUnitPrice_PAYG();
  	}
+	 place=0;
+	 cnf=1;
 %> 
 <tr>
 <td style="width: 64px;"><b>Total</b></td>
